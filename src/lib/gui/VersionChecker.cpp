@@ -9,6 +9,8 @@
 #include "common/Settings.h"
 #include "common/VersionInfo.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLocale>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -16,6 +18,31 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <climits>
+
+namespace {
+
+QString parseNewestVersion(const QByteArray &body)
+{
+  const auto trimmed = QString::fromUtf8(body).trimmed();
+  if (trimmed.isEmpty()) {
+    return {};
+  }
+
+  QString version = trimmed;
+  if (trimmed.startsWith(QLatin1Char('{'))) {
+    const auto doc = QJsonDocument::fromJson(body);
+    version = doc.object().value(QStringLiteral("tag_name")).toString().trimmed();
+  } else {
+    version = trimmed.split(QLatin1Char('\n')).constFirst().trimmed();
+  }
+
+  if (version.startsWith(QLatin1Char('v')) || version.startsWith(QLatin1Char('V'))) {
+    version.remove(0, 1);
+  }
+  return version.trimmed();
+}
+
+} // namespace
 
 VersionChecker::VersionChecker(QObject *parent) : QObject(parent), m_network{new QNetworkAccessManager(this)}
 {
@@ -46,7 +73,7 @@ void VersionChecker::replyFinished(QNetworkReply *reply)
 
   qDebug("version check server success, http status: %d", httpStatus);
 
-  const auto newestVersion = QString(reply->readAll());
+  const auto newestVersion = parseNewestVersion(reply->readAll());
   reply->deleteLater();
   qDebug("version check response: %s", qPrintable(newestVersion));
 

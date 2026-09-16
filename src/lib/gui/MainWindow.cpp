@@ -463,7 +463,7 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::openGetNewVersionUrl() const
 {
-  QDesktopServices::openUrl(QUrl(kUrlDownload));
+  QDesktopServices::openUrl(QUrl(Settings::value(Settings::Gui::UpdateDownloadUrl).toString()));
 }
 
 void MainWindow::openSettings()

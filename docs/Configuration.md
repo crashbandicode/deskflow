@@ -108,7 +108,8 @@ This section contains options used by the GUI it will begin with `[gui]`
 | shownServerFirstStartMessage   | `true` or `false` | When `true` GUI has shown the user the Deskflow server is now running message [default: false] |
 | shownVerionInTitle             | `true` or `false` | When `true` GUI will include the version in the window title [default: false] |
 | startCoreWithGui               | `true` or `false` | When true the Core will be started with the GUI. It is set to the Core's state on exit. |
-| updateCheckUrl                 | URL               | The URL to use when checking for a new version number, it should return a version [default: https://api.deskflow.org/version]|
+| updateCheckUrl                 | URL               | The URL to use when checking for a new version number. Plain version text or a GitHub release JSON `tag_name` are accepted. [default: https://raw.githubusercontent.com/crashbandicode/deskflow/master/VERSION]|
+| updateDownloadUrl              | URL               | Opened when an update is offered [default: https://github.com/crashbandicode/deskflow/releases/latest]|
 
 ### Log
 

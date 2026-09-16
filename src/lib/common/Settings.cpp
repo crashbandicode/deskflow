@@ -219,6 +219,9 @@ QVariant Settings::defaultValue(const QString &key)
   if (key == Gui::UpdateCheckUrl)
     return kUrlUpdateCheck;
 
+  if (key == Gui::UpdateDownloadUrl)
+    return kUrlDownload;
+
   if (key == Server::ExternalConfigFile)
     return QStringLiteral("%1/%2-server.conf").arg(Settings::settingsPath(), kAppId);
 
